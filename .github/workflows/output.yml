@@ -1,0 +1,16 @@
+name: Issue Event
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  issues:
+    runs-on: ubuntu-latest
+    steps:
+      - name: WriteGithubContext
+        run: |
+          echo "Run Github Context"
+          echo "############################################################"
+          echo "${{toJSON(github)}}"
+          echo "############################################################"
