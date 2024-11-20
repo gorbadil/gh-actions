@@ -63,19 +63,13 @@ jobs:
         run: npm run build
   deploy:
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy
-        run: |
-          echo "#######################"
-          echo "Deploying..."
-          echo "#######################"
+    uses: ./.github/workflows/reusable.yml
   report:
     needs: [deploy, lint]
+    if: ${{failure()}}
     runs-on: ubuntu-latest
     steps:
       - name: Report Job
-        if: ${{failure()}}
         run: |
           echo "#######################"
           echo "#{{ toJSON(github) }}"
