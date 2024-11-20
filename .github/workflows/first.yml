@@ -1,6 +1,9 @@
 # Github Actions
 name: First
-on: [push]
+on:
+  push:
+    branches: main
+  workflow_dispatch:
 
 jobs:
   lint:
