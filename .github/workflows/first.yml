@@ -63,7 +63,7 @@ jobs:
         run: npm run build
   deploy:
     needs: build
-    uses: gorbadil/gh-actions/.github/workflows/reusable.yml
+    uses: gorbadil/gh-actions/.github/workflows/reusable.yml@main
   report:
     needs: [deploy, lint]
     if: ${{failure()}}
