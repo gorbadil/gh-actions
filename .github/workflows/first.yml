@@ -18,9 +18,9 @@ jobs:
           path: |
             ~/.npm
             node_modules
-          key: cache-npm-files-${{ hashFiles('**/package-lock.json') }}
+          key: cache-node-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit == 'ture'
+        if: steps.cache.outputs.cache-hit == 'false'
         run: npm ci
       - name: Run Lint
         run: npm run lint
@@ -36,9 +36,9 @@ jobs:
           path: |
             ~/.npm
             node_modules
-          key: cache-npm-files-${{ hashFiles('**/package-lock.json') }}
+          key: cache-node-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit == 'ture'
+        if: steps.cache.outputs.cache-hit == 'false'
         run: npm ci
       - name: Run Tests
         run: npm run test
@@ -55,9 +55,9 @@ jobs:
           path: |
             ~/.npm
             node_modules
-          key: cache-npm-files-${{ hashFiles('**/package-lock.json') }}
+          key: cache-node-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit == 'ture'
+        if: steps.cache.outputs.cache-hit == 'false'
         run: npm ci
       - name: Run Build to Deploy
         run: npm run build
