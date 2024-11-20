@@ -20,7 +20,7 @@ jobs:
             node_modules
           key: cache-node-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit == 'false'
+        if: steps.cache.outputs.cache-hit == '' || steps.cache.outputs.cache-hit == 'false'
         run: npm ci
       - name: Run Lint
         run: npm run lint
@@ -38,7 +38,7 @@ jobs:
             node_modules
           key: cache-node-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit == 'false'
+        if: (steps.cache.outputs.cache-hit == '') || steps.cache.outputs.cache-hit == 'false'
         run: npm ci
       - name: Run Tests
         run: npm run test
@@ -57,7 +57,7 @@ jobs:
             node_modules
           key: cache-node-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
-        if: steps.cache.outputs.cache-hit == 'false'
+        if: (steps.cache.outputs.cache-hit == '') || steps.cache.outputs.cache-hit == 'false'
         run: npm ci
       - name: Run Build to Deploy
         run: npm run build
@@ -75,7 +75,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Report Job
-        if: failure()
+        if: ${{failure()}}
         run: |
           echo "#######################"
           echo "#{{ toJSON(github) }}"
