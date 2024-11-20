@@ -12,28 +12,33 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Cache Dependencies
+        id: cache
         uses: actions/cache@v3
         with:
           path: |
             ~/.npm
+            node_modules
           key: cached-npm-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit == 'ture'
         run: npm ci
       - name: Run Lint
         run: npm run lint
   test:
-    needs: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Cache Dependencies
+        id: cache
         uses: actions/cache@v3
         with:
           path: |
             ~/.npm
+            node_modules
           key: cached-npm-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit == 'ture'
         run: npm ci
       - name: Run Tests
         run: npm run test
@@ -44,12 +49,34 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
       - name: Cache Dependencies
+        id: cache
         uses: actions/cache@v3
         with:
           path: |
             ~/.npm
+            node_modules
           key: cached-npm-files-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
+        if: steps.cache.outputs.cache-hit == 'ture'
         run: npm ci
       - name: Run Build to Deploy
         run: npm run build
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        run: |
+          echo "#######################"
+          echo "Deploying..."
+          echo "#######################"
+  report:
+    needs: [deploy, lint]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Report Job
+        if: failure()
+        run: |
+          echo "#######################"
+          echo "#{{ toJSON(github) }}"
+          echo "#######################"
